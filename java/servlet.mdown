@@ -1,0 +1,68 @@
+##Servlet###
+
+
+
+* [Quick start](#quick-start)
+
+###路径###
+- /servlet/HelloServlet 第一个/表示服务器根目录
+- href="<%request.getContextPath()%>/servlet/HelloServlet" request.getContextPath获取上下文路径，其实表示项目的根目录
+```java
+    <url-pattern>/servlet/HelloServlet<url-pattern>
+    <url-pattern>servlet/HelloServlet<url-pattern>
+```
+- 我发现/开头必定是根目录，另外，java里面的开发，路径会忽略文件夹。
+遇到的问题是第一个成功加载，第二个无法加载
+
+###获取初始化参数###
+```
+    <init-param>
+        <param-name>username<param-name>
+        <param-value>admin<param-value>
+    <init-param>
+```
+在servlet中可以使用config调用这些初始化参数，例如使用config.getInitParameter("username");
+
+#使用Servlet开发一个购物测试
+
+###分析
+
+- 购买商品集合
+- 添加，删除商品，计算价格
+
+###代码结构
+- **entity**: 
+    ```java
+        public class Cart{
+            private HashMap<Items,Integer> goods;//定义商品结构
+            private double totalPrivce//总价格
+            //构造方法
+            publc Cart(){
+                goods = new HashMap<Items,Integer>();
+                totalPrice = 0;
+            }
+            //getter setter方法 这里省略
+            //添加商品进购物测方法
+            public boolean addGoodsFromCart(Item item){
+                goods.put(item.number);
+                CallTotalPrice();
+                return true;
+            }
+            public boolean removeGoodsFromCart(Items item){
+                goods.remove(item);
+                calTotalPrice()；//重新计算购物车的总金额
+                return true;
+            }
+            public double calTotalPrice(){
+                double sum = 0.0;
+                Set<Items> key = goods.keySet();//获得键集合
+                Iterator it = keys.iterator();//获得迭代器对象
+                while(it.hasNext()){
+                    Item i = it.next();
+                    sum+=i.getPrice()*goods.get(i);
+                }
+
+                this.setTotalPrice(sum);
+            }
+        }
+
