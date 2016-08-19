@@ -38,8 +38,8 @@ Java Data Base Connectivity 的简称。由一系列链接，sql语句和和结�
 ### 建立连接
 
 ``` java
- 	Class.forName("sun.jdbc.dobc.Jdcn0dbcDriver");
- 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/news?user = root&password=passwd");
+ 	Class.forName("sun.jdbc.dobc.Jdcn0dbcDriver");//将相应的驱动程序包加进来呗
+ 	Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/news?user = root&password=passwd");//创建一个连接
 
 ```
 
@@ -66,4 +66,12 @@ Java Data Base Connectivity 的简称。由一系列链接，sql语句和和结�
 	rs.close();//关闭ResultSet实例
 	statement.close();//关闭statement实例
 	con.close() //关闭connection实例
+```
+**注意事项**：建议使用PrepareStatement和CallableStatement，可以预防SQL注入问题，减轻网络负载
+使用CallableStatement对象执行数据库名称为sp_searchnews却参数为IN类型的存储过程
+```java
+	CallableStatement stmt = null;
+	stmt = con.prepareCall("{call sp_searchnews(?)");//调取IN型的存储过程sp_searchnews,(条件查询)
+	stmt.setInt(1,3);//设置IN类型存储过程参数值为3
+	ResultSet rs =  stmt.executeQuery() //执行语句并返回值
 ```

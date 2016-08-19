@@ -3,10 +3,44 @@
 - DAO //该模式将数据访问逻辑进行了封装
 	- vo类//即值对象，一个包含属性与表中字段完全对应的类，并提供setter和getter方法。vo类其实就是一个javaBean
 
-	- DAO接口 //DAO接口为开发人员提供数据访问的一些通用方法，定义了增删查改，命名格式为：表名+DAO
+	- DAO接口 //DAO接口为开发人员提供数据访问的一些通用方法，定义了增删查改，命名格式为：表名+DAO,定义了5个抽象方法,**com.henu.dao
+	```java
+		public interface MessageDAO(){
+			public void save(Message message){
+			}
+			public void delete(Message message){
 
-	- DAO实现类 //实现DAO接口，往往与具体的底层数据库关系较为紧密，表名+DAO+Implement
+			}
+			public void update(Message message){
+
+			}
+			public Message searchById(int id){
+
+			}
+			public List searchByLikeProperty(String property,String val){} 
+		}
+
+	```
+
+
+	- DAO实现类 //实现DAO接口，往往与具体的底层数据库关系较为紧密，表名+DAO+Implement,具体请看**sql tutorial.md**  ---**com.henu.dao.impl
 		- Connect con = null;
 		  String
 			
 	- DAO工厂类 //只需要修改DAO工厂类中类方法即可，而不必修改所有的操作数据库代码
+	```java
+		package com.henu.factory
+		public class DAOFactory(){
+			public static MessageDAO getMessageInstace(){
+				return new MessageDAO():
+			}
+		}
+		//用DAO工厂方法实现对数据库进行模糊查询的核心代码
+		List messageList = new ArrayList();
+		messageList = DAOFactory.geMessageDAOInstance().searchByLikeProperty("username","java");
+		for(int i =0;i<messageList.size();i++){
+			Message msg = null;
+			msg = (Message)messageList.get(i);
+			
+		}
+	```
