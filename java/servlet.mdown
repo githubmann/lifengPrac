@@ -64,5 +64,15 @@
 
                 this.setTotalPrice(sum);
             }
+            //测试购物车类
+            public static void main(String[] arg){
+                Item il = new Item(1,"沃特篮球鞋","温州",200,500,"001.jpg");
+                Item i2 = new Item(2,"李宁篮球鞋","广州",300,500,"002.jpg");
+
+                Cart c = new Cart();
+                c.addGoodsInCart(i1.1):
+                c.addGoodsInCart(i2,1)
+
+                System.out.println();
         }
 
