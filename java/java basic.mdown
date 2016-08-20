@@ -1,0 +1,16 @@
+###Map###
+Map是Java中的接口，Map.Entry是Map的内部接口
+Map提供了常用方法，keySet(),entrySet()。
+- keySet(),返回Map中key的集合，entrySet()也返回一个类型为Map.Entry的集合
+- Map.Entry是Map声明的一个接口，定义为Entry< k,v >,表示Map的一个实体
+- 有getKey(),getValue方法  
+
+#### 常用遍历方法 ####
+1.
+```java
+    Map map = new HashMap();
+    iterator it = map.entrySet().iterator();
+    while(it.hasNext()){
+        Map.Entry me = it.next();
+        Object key = entry.getKey();
+    }

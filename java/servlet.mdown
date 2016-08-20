@@ -1,8 +1,6 @@
 ##Servlet###
 
-
-
-* [Quick start](#quick-start)
+* [Quick start](#fenxi)
 
 ###路径###
 - /servlet/HelloServlet 第一个/表示服务器根目录
@@ -23,7 +21,14 @@
 ```
 在servlet中可以使用config调用这些初始化参数，例如使用config.getInitParameter("username");
 
-#使用Servlet开发一个购物测试
+###包###
+- 默认情况下,servlet应用程序位于<Tomcat-installation-directory>/webapps/ROOT/WEB-INF/classes中，为编译后的字节码。例如:com.myorg.MainServlet位于 WEB-INF/classes/com/myorg/MainServlet.class
+
+###利用相应的包开发一个可以发送电子邮件的模块
+- 利用这两个包：javaMail API(mail.jar)和JAF(java activation framwork,下的activation.jar包)
+- [相关知识的wiki](http://wiki.jikexueyuan.com/project/servlet/sending-email.html)
+
+#使用Servlet开发一个购物测试#
 
 ###分析
 
@@ -31,7 +36,7 @@
 - 添加，删除商品，计算价格
 
 ###代码结构
-- **entity**: 
+- **entity**: 缠扎了业务逻辑
     ```java
         public class Cart{
             private HashMap<Items,Integer> goods;//定义商品结构
@@ -44,7 +49,13 @@
             //getter setter方法 这里省略
             //添加商品进购物测方法
             public boolean addGoodsFromCart(Item item){
-                goods.put(item.number);
+                //如何保证不添加重复商品
+                if(goods.containsKey(item)){
+                    goods.put(item.goods.get(item)+number);
+
+                }else{
+                    goods.put(item,number):
+                }
                 CallTotalPrice();
                 return true;
             }
@@ -72,7 +83,32 @@
                 Cart c = new Cart();
                 c.addGoodsInCart(i1.1):
                 c.addGoodsInCart(i2,1)
-
+                //变量购买商品的集合
+                Set<Map.Entry<Item,Inter
                 System.out.println();
         }
+    ```
+- 如何保证不添加重复商品：将改写hashCode和equals将同一个商品的购买信息放在同一个内存地址中,主要用**goods.containsKey(item)**来判断是否是同一个商品（这里说的是同种类型商品不同次购买）
 
+    ```java
+        //改写Item的hashcode()方法
+        public int hashCde(){
+            return this.getId()+this.getName().hashCode():
+        }
+        //改写equals方法
+        public boolean equals(Object obj){
+            if(this==obj){
+                return true;
+            }
+            if(obj instanceof Item){
+                Item i = (item)obj;
+                if(this.getId()==i.getId()&&this.getName()==i.getName()){
+                    return true;
+                }else{
+                    retur false;
+                }
+            }else{
+                return false;
+            }
+        }
+    ```
