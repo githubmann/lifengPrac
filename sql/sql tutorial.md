@@ -75,3 +75,97 @@ Java Data Base Connectivity 的简称。由一系列链接，sql语句和和结�
 	stmt.setInt(1,3);//设置IN类型存储过程参数值为3
 	ResultSet rs =  stmt.executeQuery() //执行语句并返回值
 ```
+###JDBC与sql###
+```java
+package lesson.jdbc;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class DBConnectionManager {
+
+	private static Connection conn = null;
+
+	public static Connection getConnection() {
+		if (conn == null) {
+			synchronized (DBConnectionManager.class) {
+				if (conn == null) {
+					conn = connection();
+				}
+			}
+		}
+		return conn;
+	}
+
+	private static Connection connection() {
+		Statement stat = null;
+		String url = "jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF8";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");// 动态加载mysql驱动
+			System.out.println("成功加载MySQL驱动程序");
+			conn = DriverManager.getConnection(url, "root", "123456");
+			System.out.println("成功链接");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return conn;
+	}
+
+	public static void close(ResultSet set, Statement stmt, Connection conn) {
+		try {
+			if (set != null) {
+				set.close();
+			}
+			if (stmt != null) {
+				stmt.close();
+			}
+			if (conn != null) {
+				conn.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+}
+```
+
+```java
+package lesson.jdbc;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class JDBCTest {
+
+	public static void main(String[] args) {
+		test1();
+	}
+
+	private static void test1() {
+		Connection conn = DBConnectionManager.getConnection();
+		PreparedStatement stmt = null;
+		ResultSet set = null;
+		try {
+			String sql = "select * from sec_user s where s.account =?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, "sam");
+			set = stmt.executeQuery();
+			while (set.next()) {
+				System.out.println(String.format(
+						"id:%s,account:%s,password:%s", set.getString("id"),
+						set.getString("account"), set.getString("password")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBConnectionManager.close(set, stmt, conn);
+		}
+	}
+}
+```
