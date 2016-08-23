@@ -90,7 +90,7 @@
 
 
 ###tomcat-users.xml简析###
-
+关于**用户角色，管理员**的信息都在这个配置文件当中
 
 ```xml
 	<?xml version="1.0" encoding="UTF-8"?>
