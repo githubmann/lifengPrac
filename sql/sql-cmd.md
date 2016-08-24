@@ -8,4 +8,3 @@
 - 在另开一个cmd，进入bin目录，输入mysql -u root mysql
 - 然后输入update user set password=password('123456') where user='root';
 - 然后刷新权限，FLUSH PRIVILEGES;
- 
